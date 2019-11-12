@@ -11,15 +11,15 @@ def main(argv):
     project_id = ''
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:", ["fileName=", "projectId="])
+        opts, args = getopt.getopt(argv, "hf:p:", ["fileName=", "projectId="])
     except getopt.GetoptError:
-        print('mkcsv.py -n <fileName> -p <projectId>')
+        print('mkcsv.py -f <fileName> -p <projectId>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('mkcsv.py -i <fileName> -p <projectId>')
+            print('mkcsv.py -f <fileName> -p <projectId>')
             sys.exit()
-        elif opt in ("-i", "--fileName"):
+        elif opt in ("-f", "--fileName"):
             file_name = arg
             print("file_name: ", file_name)
         elif opt in ("-p", "--projectId"):
@@ -38,7 +38,7 @@ def create_csv(file_name, project_id):
     # 1. 创建文件对象
     f = open(csv_file_name, 'w', encoding='utf-8')
     # 2. 基于文件对象构建 csv写入对象
-    csv_writer = csv.writer(f)
+    csv_writer = csv.writer(f, delimiter='|')
     # 3. 构建CSV头
     csv_writer.writerow(csv_head)
     # 4. 构建CSV内容
@@ -49,7 +49,7 @@ def create_csv(file_name, project_id):
         csv_writer.writerow(csv_body)
         count = count + 1
     # 4. 构建CSV尾内容
-    csv_tail = csv_tail + loop_count
+    csv_tail = csv_tail + str(loop_count)
     csv_writer.writerow(csv_tail)
     f.close()
 
